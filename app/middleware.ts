@@ -1,8 +1,14 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(req: NextRequest) {
-    console.log('passou no middleware???');
+    return NextResponse.redirect('/auth/login');
 }
+
+export const config = {
+    matcher: [
+        
+    ],
+};
 
 // import { getToken } from "next-auth/jwt";
 // import { NextFetchEvent, NextRequest, NextResponse } from "next/server";

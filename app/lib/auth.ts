@@ -27,6 +27,14 @@ export const authOptions: NextAuthOptions = {
 
                 const { username, password } = credentials;
 
+                // const res = await fetch('url_here', {
+                //     method: 'POST',
+                //     body: JSON.stringify({ username, password }),
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     }
+                // });
+
                 const user = {
                     id: '1',
                     name: 'Admin',

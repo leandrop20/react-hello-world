@@ -3,6 +3,8 @@ import './styles/globals.module.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { AuthProvider } from './providers';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './lib/auth';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,6 +18,8 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
+	getServerSession(authOptions);
+
 	return (
 		<html lang="pt-br">
 			<body className={inter.className}>

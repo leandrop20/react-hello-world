@@ -1,19 +1,25 @@
-'use client';
+// 'use client';
 
+import { getServerSession } from 'next-auth';
 import A from './components/a';
 import styles from './page.module.scss';
 import { signOut, useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
+import { authOptions } from './lib/auth';
 
-export default function Home() {
-	// const { data: session } = useSession({
+export default async function Home() {
+	const session = await getServerSession(authOptions);
+
+	// const { status } = useSession({
 	// 	required: true,
 	// 	onUnauthenticated() {
 	// 		redirect('/api/auth/signin');
-	// 	}
+	// 	},
 	// });
 
-	// console.log(session?.user);
+	// if (status === 'loading') {
+	// 	return <p>Loading...</p>;
+	// }
 
 	return (
 		<>
@@ -21,7 +27,7 @@ export default function Home() {
 			<A text='users' href='users' />
 			<button
 				className='btn btn-danger'
-				onClick={() => signOut()}
+				// onClick={() => signOut()}
 			>
 				Sign Out
 			</button>
