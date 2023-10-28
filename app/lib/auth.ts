@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
 
                 const { username, password } = credentials;
 
-                if (username == '' || password == '') {
+                if (username != 'usertest' || password != '123123') {
                     throw new Error('Usuário ou senha inválido!');
                 }
 

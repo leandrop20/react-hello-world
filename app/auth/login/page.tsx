@@ -4,19 +4,33 @@ import { useState } from 'react';
 import styles from './page.module.scss';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { ILogin } from '@/app/interfaces/ILogin';
+import { register } from 'module';
 
-export default function Login({ params }: { params: { callbackUrl: string } }) {    
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+export default function Login({ params }: { params: { callbackUrl: string } }) {
+    const [formData, setFormData] = useState<ILogin>({
+        username: '',
+        password: '',
+    });
+    const [error, setError] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
     const callbackUrl = decodeURI(params.callbackUrl! ?? '/home');
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
+        setIsLoading(true);
         
         const result = await signIn('credentials', {
-            username,
-            password,
+            username : formData.username,
+            password: formData.password,
             callbackUrl: '/',
             redirect: false
         });
@@ -28,6 +42,8 @@ export default function Login({ params }: { params: { callbackUrl: string } }) {
         if (result?.ok) {
             router.push(callbackUrl);
         }
+
+        setIsLoading(false);
     };
 
     return (
@@ -41,24 +57,35 @@ export default function Login({ params }: { params: { callbackUrl: string } }) {
             <div className='row'>
                 <div className='col-12'>
                     <input
-                        type="text"
-                        value={username}
+                        type='text'
+                        name='username'
+                        value={formData.username}
                         placeholder='username'
                         className='form-control'
-                        onChange={(e) => { setUsername(e.target.value); }}
+                        onChange={handleChange}
+                        autoComplete='off'
+                        required
                     />
                 </div>
                 <div className='col-12'>
                     <input
-                        type="password"
-                        value={password}
+                        type='password'
+                        name='password'
+                        value={formData.password}
                         placeholder='password'
                         className='form-control'
-                        onChange={(e) => { setPassword(e.target.value); }}
+                        onChange={handleChange}
+                        autoComplete='off'
+                        required
                     />
                 </div>
                 <div className='col-12'>
-                    <button className='btn btn-primary'>Sign In</button>
+                    <button
+                        className='btn btn-primary'
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Loading' : 'Sign In'}
+                    </button>
                 </div>
             </div>
         </form>

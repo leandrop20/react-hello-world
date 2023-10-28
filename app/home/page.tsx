@@ -5,7 +5,7 @@ import Loading from './loading';
 import { Suspense, useEffect, useState } from 'react';
 
 export default function Home() {
-    const [data, setData] = useState({ test: '' });
+    const [data, setData] = useState<any>({ test: '' });
 
     useEffect(() => {
         fetch('/api/users')
