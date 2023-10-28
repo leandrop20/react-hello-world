@@ -10,9 +10,9 @@ export async function middleware(request: NextRequest, _next: NextFetchEvent) {
     
     if (matchesProtectedPath) {
         const token = await getToken({ req: request });
-
-        if (!token) {
-            const url = new URL('/signin', request.url);
+        
+        if (!token && !pathname.startsWith('/auth/login')) {
+            const url = new URL('/auth/login', request.url);
             url.searchParams.set('callbackUrl', encodeURI(request.url));
             return NextResponse.redirect(url);
         }
@@ -21,6 +21,11 @@ export async function middleware(request: NextRequest, _next: NextFetchEvent) {
         //     const url = new URL('/auth/login', request.url);
         //     return NextResponse.rewrite(url);
         // }
+
+        if (token && pathname.startsWith('/auth/login')) {
+            const url = new URL('/home', request.url);
+            return NextResponse.redirect(url);
+        }
     }
 
     return NextResponse.next();
@@ -28,6 +33,8 @@ export async function middleware(request: NextRequest, _next: NextFetchEvent) {
 
 export const config = {
     matcher: [
-        '/',
+        '/users/:path*',
+        '/home/:path*',
+        '/auth/login',
     ],
 };

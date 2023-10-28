@@ -5,12 +5,12 @@ import styles from './page.module.scss';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-export default function Login({ params }: { params: { callbackUrl: string } }) {
+export default function Login({ params }: { params: { callbackUrl: string } }) {    
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const router = useRouter();
-    const callbackUrl = decodeURI(params.callbackUrl! ?? '/');
+    const callbackUrl = decodeURI(params.callbackUrl! ?? '/home');
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         
@@ -24,7 +24,7 @@ export default function Login({ params }: { params: { callbackUrl: string } }) {
         if (result?.error) {
             setError(result.error);
         }
-
+        
         if (result?.ok) {
             router.push(callbackUrl);
         }

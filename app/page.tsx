@@ -1,5 +1,3 @@
-// 'use client';
-
 import { getServerSession } from 'next-auth';
 import A from './components/a';
 import styles from './page.module.scss';
@@ -7,8 +5,10 @@ import { signOut, useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { authOptions } from './lib/auth';
 
-export default async function Home() {
-	const session = await getServerSession(authOptions);
+export default function Home() {
+	// const session = await getServerSession(authOptions);
+
+	// const { data: session } = useSession();
 
 	// const { status } = useSession({
 	// 	required: true,
@@ -23,14 +23,8 @@ export default async function Home() {
 
 	return (
 		<>
-			<p>Home</p>
-			<A text='users' href='users' />
-			<button
-				className='btn btn-danger'
-				// onClick={() => signOut()}
-			>
-				Sign Out
-			</button>
+			<p>Ola mundo</p>
+			<A text="login" href="/auth/login" />
 		</>	
 	);
 }
